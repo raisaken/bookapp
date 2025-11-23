@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+  <h2 class="text-2xl mb-4">Login</h2>
+  {% if error %}<div class="bg-red-100 p-2 mb-3">{{ error }}</div>{% endif %}
+  <form method="POST">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <label class="block mb-2">Username<input name="username" class="border p-2 w-full" required></label>
+    <label class="block mb-2">Password<input type="password" name="password" class="border p-2 w-full" required></label>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded">Login</button>
+  </form>
+</div>
+{% endblock %}

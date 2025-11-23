@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% block title %}{{ action == 'create' ? 'Add Book' : 'Edit Book' }}{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+  <h2 class="text-2xl mb-4">{{ action == 'create' ? 'Add Book' : 'Edit Book' }}</h2>
+  <form method="POST">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <label class="block mb-2">Title<input name="title" class="border p-2 w-full" value="{{ book.title|default('')|e }}" required></label>
+    <label class="block mb-2">Author<input name="author" class="border p-2 w-full" value="{{ book.author|default('')|e }}" required></label>
+    <label class="block mb-2">Genre<input name="genre" class="border p-2 w-full" value="{{ book.genre|default('')|e }}" required></label>
+    <label class="block mb-2">Year<input name="year" type="number" class="border p-2 w-full" value="{{ book.year|default('') }}"></label>
+    <label class="block mb-2">Description<textarea name="description" class="border p-2 w-full">{{ book.description|default('')|e }}</textarea></label>
+    <button class="bg-green-600 text-white px-4 py-2 rounded">{{ action == 'create' ? 'Create' : 'Update' }}</button>
+  </form>
+</div>
+{% endblock %}

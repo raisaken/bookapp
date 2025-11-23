@@ -1,0 +1,56 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Books{% endblock %}
+{% block content %}
+{% if error %}<div class="bg-red-100 p-2 mb-3">{{ error }}</div>{% endif %}
+<div class="mb-4 flex justify-between items-center">
+  <form method="GET" class="flex space-x-2" action="">
+    <input type="hidden" name="p" value="books/list">
+    <div class="relative">
+      <input id="q" name="q" placeholder="Search title, author or description" value="{{ q|e }}" class="border p-2" autocomplete="off">
+    </div>
+    <input name="genre" placeholder="Genre" value="{{ genre|e }}" class="border p-2">
+    <input name="year" placeholder="Year" value="{{ year|e }}" class="border p-2 w-20">
+    <button class="bg-blue-600 text-white px-3 py-2 rounded">Search</button>
+  </form>
+  <div>
+    {% if auth.user %}
+      <a href="?p=books/create" class="bg-indigo-600 text-white px-3 py-2 rounded">Add New</a>
+    {% endif %}
+  </div>
+</div>
+
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+  <thead class="bg-gray-50">
+    <tr>
+      <th class="p-2 text-left">Title</th>
+      <th class="p-2 text-left">Author</th>
+      <th class="p-2 text-left">Genre</th>
+      <th class="p-2 text-left">Year</th>
+      <th class="p-2 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr class="border-t">
+      <td class="p-2">{{ book.title|e }}</td>
+      <td class="p-2">{{ book.author|e }}</td>
+      <td class="p-2">{{ book.genre|e }}</td>
+      <td class="p-2">{{ book.year }}</td>
+      <td class="p-2">
+        <a href="?p=books/edit/{{ book.id }}" class="mr-2">Edit</a>
+        {% if auth.user %}
+        <form method="POST" action="?p=books/delete/{{ book.id }}" class="inline" onsubmit="return confirm('Delete this book?')">
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <button class="text-red-600">Delete</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td class="p-4" colspan="5">No books found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script src="/assets/js/app.js"></script>
+{% endblock %}
