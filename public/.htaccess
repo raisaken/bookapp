@@ -1,4 +1,36 @@
 # Basic rewrite to route requests to index.php
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+# RewriteEngine On
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule ^ index.php [QSA,L]
+# bookapp/public/.htaccess
+
+## 1. HIDE DIRECTORY LISTINGS
+# Prevents users from viewing a list of files if index.php is missing.
+Options -Indexes
+
+## 2. URL REWRITE ENGINE
+<IfModule mod_rewrite.c>
+    # Turn on the rewrite engine
+    RewriteEngine On
+    
+    # 2a. If the request is for an existing file (e.g., /css/styles.css), ignore rewriting and serve the file
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # 2b. If the request is for an existing directory (e.g., /images/), ignore rewriting
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # 2c. Route all other requests (your clean URLs) to index.php
+    # [QSA]: Appends any existing query string
+    # [L]: Stops processing subsequent rules
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+## 3. DENY ACCESS TO HIDDEN FILES (EXCEPT .htaccess)
+# Prevents direct access to files starting with a dot, like .env or .git files.
+<Files ".*">
+    Require all denied
+</Files>
+<Files ".htaccess">
+    # Allow access to the .htaccess file itself for server processing
+    Require all granted
+</Files>

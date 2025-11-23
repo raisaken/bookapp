@@ -1,0 +1,25 @@
+# bookapp/.htaccess
+
+## 1. DENY ACCESS TO SENSITIVE APPLICATION FOLDERS
+# These folders contain code, configuration, or templates that should NEVER be publicly visible.
+
+<Directory "config">
+    Require all denied
+</Directory>
+
+<Directory "vendor">
+    Require all denied
+</Directory>
+
+<Directory "templates">
+    Require all denied
+</Directory>
+
+## 2. DENY ACCESS TO SENSITIVE FILE TYPES
+# Blocks direct access to common configuration or source files.
+<FilesMatch "\.(ini|log|cfg|yml|yaml|env|db\.php|json|twig)$">
+    Require all denied
+</FilesMatch>
+
+## 3. HIDE DIRECTORY LISTINGS
+Options -Indexes
